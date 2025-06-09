@@ -1,0 +1,80 @@
+public class MinHeap {
+    private int[] heap;
+    private int tamanho;
+    private int capacidade;
+
+    public MinHeap(int capacidade) {
+        this.capacidade = capacidade;
+        this.tamanho = 0;
+        this.heap = new int[capacidade + 1]; // Índice 0 não utilizado
+    }
+
+    // Insere um valor no MinHeap
+    public void inserir(int valor) {
+        if (tamanho >= capacidade) {
+            System.out.println("Heap cheio!");
+            return;
+        }
+        heap[++tamanho] = valor;
+        int atual = tamanho;
+        while (atual > 1 && heap[atual] < heap[atual / 2]) {
+            trocar(atual, atual / 2);
+            atual /= 2;
+        }
+    }
+
+    // Remove e retorna o menor elemento (raiz)
+    public int removerMin() {
+        if (tamanho == 0) {
+            System.out.println("Heap vazio!");
+            return Integer.MAX_VALUE;
+        }
+        int min = heap[1];
+        heap[1] = heap[tamanho--];
+        minHeapify(1);
+        return min;
+    }
+
+    // Retorna o menor elemento sem remover
+    public int minimo() {
+        return tamanho == 0 ? Integer.MAX_VALUE : heap[1];
+    }
+
+    // Corrige o heap a partir do índice i (para manter a propriedade MinHeap)
+    private void minHeapify(int i) {
+        int menor = i;
+        int esquerdo = 2 * i;
+        int direito = 2 * i + 1;
+
+        if (esquerdo <= tamanho && heap[esquerdo] < heap[menor])
+            menor = esquerdo;
+        if (direito <= tamanho && heap[direito] < heap[menor])
+            menor = direito;
+        if (menor != i) {
+            trocar(i, menor);
+            minHeapify(menor);
+        }
+    }
+
+    // Troca dois elementos no heap
+    private void trocar(int i, int j) {
+        int temp = heap[i];
+        heap[i] = heap[j];
+        heap[j] = temp;
+    }
+
+    // Exemplo de uso
+    public static void main(String[] args) {
+        MinHeap heap = new MinHeap(10);
+        heap.inserir(5);
+        heap.inserir(3);
+        heap.inserir(17);
+        heap.inserir(10);
+        heap.inserir(84);
+        heap.inserir(19);
+
+        System.out.println("Menor elemento: " + heap.minimo()); // 3
+        System.out.println("Removendo menor: " + heap.removerMin()); // 3
+        System.out.println("Novo menor: " + heap.minimo()); // 5
+    }
+}
