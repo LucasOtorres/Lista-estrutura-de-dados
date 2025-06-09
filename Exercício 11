@@ -1,0 +1,58 @@
+public class MaxHeap {
+    private int[] heap;
+    private int tamanho;
+    
+    public MaxHeap(int capacidade) {
+        this.heap = new int[capacidade + 1]; // Índice 0 não usado
+        this.tamanho = 0;
+    }
+
+    public void inserir(int valor) {
+        if (tamanho == heap.length - 1) {
+            System.out.println("Heap cheio!");
+            return;
+        }
+        heap[++tamanho] = valor;
+        int atual = tamanho;
+        while (atual > 1 && heap[atual] > heap[atual / 2]) {
+            trocar(atual, atual / 2);
+            atual /= 2;
+        }
+    }
+
+    public int removerMax() {
+        if (tamanho == 0) {
+            System.out.println("Heap vazio!");
+            return Integer.MIN_VALUE;
+        }
+        int max = heap[1];
+        heap[1] = heap[tamanho--];
+        maxHeapify(1);
+        return max;
+    }
+
+    public int maximo() {
+        return tamanho == 0 ? Integer.MIN_VALUE : heap[1];
+    }
+
+    private void maxHeapify(int i) {
+        int maior = i;
+        int esquerdo = 2 * i;
+        int direito = 2 * i + 1;
+        
+        if (esquerdo <= tamanho && heap[esquerdo] > heap[maior])
+            maior = esquerdo;
+        if (direito <= tamanho && heap[direito] > heap[maior])
+            maior = direito;
+        if (maior != i) {
+            trocar(i, maior);
+            maxHeapify(maior);
+        }
+    }
+
+    private void trocar(int i, int j) {
+        int temp = heap[i];
+        heap[i] = heap[j];
+        heap[j] = temp;
+    }
+}
