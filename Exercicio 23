@@ -1,0 +1,50 @@
+public class MergeSortInversoes {
+
+    private static long contagemInversoes = 0;
+
+    public static void mergeSort(int[] array, int inicio, int fim) {
+        if (inicio < fim) {
+            int meio = (inicio + fim) / 2;
+            mergeSort(array, inicio, meio);
+            mergeSort(array, meio + 1, fim);
+            merge(array, inicio, meio, fim);
+        }
+    }
+
+    private static void merge(int[] array, int inicio, int meio, int fim) {
+        int n1 = meio - inicio + 1;
+        int n2 = fim - meio;
+
+        int[] esquerda = new int[n1];
+        int[] direita = new int[n2];
+
+        for (int i = 0; i < n1; i++) esquerda[i] = array[inicio + i];
+        for (int j = 0; j < n2; j++) direita[j] = array[meio + 1 + j];
+
+        int i = 0, j = 0, k = inicio;
+
+        while (i < n1 && j < n2) {
+            if (esquerda[i] <= direita[j]) {
+                array[k++] = esquerda[i++];
+            } else {
+                array[k++] = direita[j++];
+                contagemInversoes += n1 - i; // Conta as inversões aqui
+            }
+        }
+
+        while (i < n1) array[k++] = esquerda[i++];
+        while (j < n2) array[k++] = direita[j++];
+    }
+
+    public static void main(String[] args) {
+        int[] numeros = {2, 4, 1, 3, 5};
+        mergeSort(numeros, 0, numeros.length - 1);
+
+        System.out.println("Array ordenado:");
+        for (int num : numeros) {
+            System.out.print(num + " ");
+        }
+
+        System.out.println("\nNúmero de inversões: " + contagemInversoes);
+    }
+}
