@@ -1,0 +1,40 @@
+public class QuickSortDecrescente {
+
+    public static void quickSort(int[] array, int inicio, int fim) {
+        if (inicio < fim) {
+            int pivoIndex = particiona(array, inicio, fim);
+            quickSort(array, inicio, pivoIndex - 1);
+            quickSort(array, pivoIndex + 1, fim);
+        }
+    }
+
+    private static int particiona(int[] array, int inicio, int fim) {
+        int pivo = array[fim];
+        int i = inicio - 1;
+
+        for (int j = inicio; j < fim; j++) {
+            if (array[j] >= pivo) { // Inversão aqui para decrescente
+                i++;
+                troca(array, i, j);
+            }
+        }
+
+        troca(array, i + 1, fim);
+        return i + 1;
+    }
+
+    private static void troca(int[] array, int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        int[] numeros = {8, 4, 2, 9, 5, 1};
+        quickSort(numeros, 0, numeros.length - 1);
+
+        for (int num : numeros) {
+            System.out.print(num + " ");
+        }
+    }
+}
