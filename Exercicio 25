@@ -1,0 +1,14 @@
+def bubble_sort(arr):
+    n = len(arr)
+    # Percorrer todos os elementos do array
+    for i in range(n):
+        # Últimos i elementos já estão na posição correta
+        for j in range(0, n - i - 1):
+            # Trocar se o elemento atual for maior que o próximo
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+# Exemplo de uso:
+lista = [64, 34, 25, 12, 22, 11, 90]
+bubble_sort(lista)
+print("Array ordenado:", lista)
