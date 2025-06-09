@@ -1,0 +1,32 @@
+ import java.util.ArrayList;
+import java.util.NoSuchElementException;
+
+public class Fila<T> {
+    private ArrayList<T> elementos;
+
+    public Fila() {
+        elementos = new ArrayList<>();
+    }
+
+    public void enfileirar(T elemento) {
+        elementos.add(elemento);
+    }
+
+    public T desenfileirar() {
+        if (estaVazia()) {
+            throw new NoSuchElementException();
+        }
+        return elementos.remove(0);
+    }
+
+    public T primeiro() {
+        if (estaVazia()) {
+            throw new NoSuchElementException();
+        }
+        return elementos.get(0);
+    }
+
+    public boolean estaVazia() {
+        return elementos.isEmpty();
+    }
+}
