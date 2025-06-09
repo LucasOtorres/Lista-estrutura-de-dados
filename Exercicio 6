@@ -1,0 +1,77 @@
+public class NoDuplo<T> {
+    T dado;
+    NoDuplo<T> anterior;
+    NoDuplo<T> proximo;
+
+    public NoDuplo(T dado) {
+        this.dado = dado;
+        this.anterior = null;
+        this.proximo = null;
+    }
+
+    public T getDado() {
+        return dado;
+    }
+}
+java
+Copiar
+Editar
+public class ListaDuplamenteLigada<T> {
+    private NoDuplo<T> inicio;
+    private NoDuplo<T> fim;
+
+    public ListaDuplamenteLigada() {
+        inicio = null;
+        fim = null;
+    }
+
+    public void inserirInicio(T dado) {
+        NoDuplo<T> novoNo = new NoDuplo<>(dado);
+        if (inicio == null) {
+            inicio = fim = novoNo;
+        } else {
+            novoNo.proximo = inicio;
+            inicio.anterior = novoNo;
+            inicio = novoNo;
+        }
+    }
+
+    public void inserirFim(T dado) {
+        NoDuplo<T> novoNo = new NoDuplo<>(dado);
+        if (fim == null) {
+            inicio = fim = novoNo;
+        } else {
+            fim.proximo = novoNo;
+            novoNo.anterior = fim;
+            fim = novoNo;
+        }
+    }
+
+    public T removerInicio() {
+        if (inicio == null) {
+            throw new IllegalStateException("Lista vazia");
+        }
+        T dado = inicio.dado;
+        if (inicio == fim) {
+            inicio = fim = null;
+        } else {
+            inicio = inicio.proximo;
+            inicio.anterior = null;
+        }
+        return dado;
+    }
+
+    public T removerFim() {
+        if (fim == null) {
+            throw new IllegalStateException("Lista vazia");
+        }
+        T dado = fim.dado;
+        if (inicio == fim) {
+            inicio = fim = null;
+        } else {
+            fim = fim.anterior;
+            fim.proximo = null;
+        }
+        return dado;
+    }
+}
