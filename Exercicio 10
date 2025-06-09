@@ -1,0 +1,24 @@
+public boolean estaBalanceada() {
+    return estaBalanceadaRec(raiz);
+}
+
+private boolean estaBalanceadaRec(No no) {
+    if (no == null) {
+        return true; // Árvore vazia é balanceada
+    }
+    
+    int alturaEsquerda = alturaRec(no.esquerda);
+    int alturaDireita = alturaRec(no.direita);
+    
+    // Verifica se a diferença de alturas é <= 1 e se as subárvores também são balanceadas
+    return (Math.abs(alturaEsquerda - alturaDireita) <= 1) 
+           && estaBalanceadaRec(no.esquerda) 
+           && estaBalanceadaRec(no.direita);
+}
+
+private int alturaRec(No no) {
+    if (no == null) {
+        return -1; // Altura de uma árvore vazia é -1 (ou 0, dependendo da definição)
+    }
+    return Math.max(alturaRec(no.esquerda), alturaRec(no.direita)) + 1;
+}
