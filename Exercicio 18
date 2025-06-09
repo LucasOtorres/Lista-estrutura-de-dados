@@ -1,0 +1,75 @@
+import java.util.Objects;
+
+public class TabelaHashEnderecamentoAberto<K, V> {
+    private static class Entry<K, V> {
+        K key;
+        V value;
+        boolean removed;
+
+        Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+            this.removed = false;
+        }
+    }
+
+    private Entry<K, V>[] tabela;
+    private int size;
+
+    public TabelaHashEnderecamentoAberto() {
+        tabela = new Entry[16];
+        size = 0;
+    }
+
+    private int hash(K key, int attempt) {
+        return (Math.abs(key.hashCode()) + attempt) % tabela.length;
+    }
+
+    public void put(K key, V value) {
+        for (int i = 0; i < tabela.length; i++) {
+            int index = hash(key, i);
+            Entry<K, V> entry = tabela[index];
+            if (entry == null || entry.removed || Objects.equals(entry.key, key)) {
+                tabela[index] = new Entry<>(key, value);
+                size++;
+                return;
+            }
+        }
+        throw new RuntimeException("Tabela cheia");
+    }
+
+    public V get(K key) {
+        for (int i = 0; i < tabela.length; i++) {
+            int index = hash(key, i);
+            Entry<K, V> entry = tabela[index];
+            if (entry == null) return null;
+            if (!entry.removed && Objects.equals(entry.key, key)) {
+                return entry.value;
+            }
+        }
+        return null;
+    }
+
+    public boolean remove(K key) {
+        for (int i = 0; i < tabela.length; i++) {
+            int index = hash(key, i);
+            Entry<K, V> entry = tabela[index];
+            if (entry == null) return false;
+            if (!entry.removed && Objects.equals(entry.key, key)) {
+                entry.removed = true;
+                size--;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        TabelaHashEnderecamentoAberto<String, Integer> t = new TabelaHashEnderecamentoAberto<>();
+        t.put("a", 1);
+        t.put("b", 2);
+        System.out.println(t.get("a")); // 1
+        t.remove("a");
+        System.out.println(t.get("a")); // null
+    }
+}
