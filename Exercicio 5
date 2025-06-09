@@ -1,0 +1,60 @@
+public class ListaLigadaOrdenada<T extends Comparable<T>> {
+    private No<T> inicio;
+
+    public ListaLigadaOrdenada() {
+        inicio = null;
+    }
+
+    public void inserir(T dado) {
+        No<T> novoNo = new No<>(dado);
+
+        if (inicio == null || dado.compareTo(inicio.dado) < 0) {
+            novoNo.proximo = inicio;
+            inicio = novoNo;
+        } else {
+            No<T> atual = inicio;
+            while (atual.proximo != null && dado.compareTo(atual.proximo.dado) >= 0) {
+                atual = atual.proximo;
+            }
+            novoNo.proximo = atual.proximo;
+            atual.proximo = novoNo;
+        }
+    }
+
+    public boolean remover(T dado) {
+        if (inicio == null) {
+            return false;
+        }
+
+        if (inicio.dado.equals(dado)) {
+            inicio = inicio.proximo;
+            return true;
+        }
+
+        No<T> atual = inicio;
+        while (atual.proximo != null && !atual.proximo.dado.equals(dado)) {
+            atual = atual.proximo;
+        }
+
+        if (atual.proximo == null) {
+            return false;
+        }
+
+        atual.proximo = atual.proximo.proximo;
+        return true;
+    }
+
+    public boolean buscar(T dado) {
+        No<T> atual = inicio;
+        while (atual != null) {
+            if (atual.dado.equals(dado)) {
+                return true;
+            }
+            if (dado.compareTo(atual.dado) < 0) {
+                return false; // otimização: parou antes do fim
+            }
+            atual = atual.proximo;
+        }
+        return false;
+    }
+}
