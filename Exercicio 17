@@ -1,0 +1,44 @@
+import java.util.*;
+
+public class TabelaHash<K,V> {
+    private LinkedList<Entry<K,V>>[] tabela = new LinkedList[16];
+    private int size = 0;
+
+    class Entry<K,V> {
+        K k; V v;
+        Entry(K k, V v) { this.k = k; this.v = v; }
+    }
+
+    public void put(K k, V v) {
+        int i = Math.abs(k.hashCode()) % tabela.length;
+        if (tabela[i] == null) tabela[i] = new LinkedList<>();
+        for (Entry<K,V> e : tabela[i])
+            if (e.k.equals(k)) { e.v = v; return; }
+        tabela[i].add(new Entry<>(k, v));
+        size++;
+    }
+
+    public V get(K k) {
+        LinkedList<Entry<K,V>> list = tabela[Math.abs(k.hashCode()) % tabela.length];
+        if (list != null)
+            for (Entry<K,V> e : list)
+                if (e.k.equals(k)) return e.v;
+        return null;
+    }
+
+    public boolean remove(K k) {
+        LinkedList<Entry<K,V>> list = tabela[Math.abs(k.hashCode()) % tabela.length];
+        if (list != null)
+            for (Entry<K,V> e : list)
+                if (e.k.equals(k)) { list.remove(e); size--; return true; }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        TabelaHash<String,Integer> t = new TabelaHash<>();
+        t.put("a", 1); t.put("b", 2);
+        System.out.println(t.get("a")); // 1
+        t.remove("a");
+        System.out.println(t.get("a")); // null
+    }
+}
