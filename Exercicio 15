@@ -1,0 +1,44 @@
+import java.util.*;
+
+public class GrafoListaAdjacencia {
+    private Map<Integer, Set<Integer>> adjacencias;
+
+    public GrafoListaAdjacencia() {
+        adjacencias = new HashMap<>();
+    }
+
+    // Adiciona uma aresta entre vértices u e v
+    public void adicionarAresta(int u, int v) {
+        adjacencias.computeIfAbsent(u, k -> new HashSet<>()).add(v);
+        adjacencias.computeIfAbsent(v, k -> new HashSet<>()).add(u);
+    }
+
+    // Remove a aresta entre vértices u e v
+    public void removerAresta(int u, int v) {
+        if (adjacencias.containsKey(u)) adjacencias.get(u).remove(v);
+        if (adjacencias.containsKey(v)) adjacencias.get(v).remove(u);
+    }
+
+    // Verifica se existe aresta entre u e v
+    public boolean existeAresta(int u, int v) {
+        return adjacencias.getOrDefault(u, Collections.emptySet()).contains(v);
+    }
+
+    // Representação textual do grafo
+    @Override
+    public String toString() {
+        return adjacencias.toString();
+    }
+
+    // Exemplo de uso
+    public static void main(String[] args) {
+        GrafoListaAdjacencia grafo = new GrafoListaAdjacencia();
+        grafo.adicionarAresta(1, 2);
+        grafo.adicionarAresta(2, 3);
+        
+        System.out.println(grafo); // {1=[2], 2=[1, 3], 3=[2]}
+        System.out.println("Aresta 1-3 existe? " + grafo.existeAresta(1, 3)); // false
+        
+        grafo.removerAresta(2, 3);
+        System.out.println(grafo); // {1=[2], 2=[1], 3=[]}
+    }
