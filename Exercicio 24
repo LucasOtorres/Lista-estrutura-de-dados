@@ -1,0 +1,52 @@
+public class MergeSortIterativo {
+
+    public static void mergeSort(int[] array) {
+        int n = array.length;
+        int[] temp = new int[n];
+
+        for (int tamanho = 1; tamanho < n; tamanho *= 2) {
+            for (int inicio = 0; inicio < n - 1; inicio += 2 * tamanho) {
+                int meio = Math.min(inicio + tamanho - 1, n - 1);
+                int fim = Math.min(inicio + 2 * tamanho - 1, n - 1);
+
+                merge(array, temp, inicio, meio, fim);
+            }
+        }
+    }
+
+    private static void merge(int[] array, int[] temp, int inicio, int meio, int fim) {
+        int i = inicio;
+        int j = meio + 1;
+        int k = inicio;
+
+        while (i <= meio && j <= fim) {
+            if (array[i] <= array[j]) {
+                temp[k++] = array[i++];
+            } else {
+                temp[k++] = array[j++];
+            }
+        }
+
+        while (i <= meio) {
+            temp[k++] = array[i++];
+        }
+
+        while (j <= fim) {
+            temp[k++] = array[j++];
+        }
+
+        for (int p = inicio; p <= fim; p++) {
+            array[p] = temp[p];
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] numeros = {8, 4, 2, 9, 5, 1};
+        mergeSort(numeros);
+
+        System.out.println("Array ordenado:");
+        for (int num : numeros) {
+            System.out.print(num + " ");
+        }
+    }
+}
